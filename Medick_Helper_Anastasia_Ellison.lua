@@ -251,7 +251,6 @@ function main()
   sampRegisterChatCommand('zinv', zinv)
   sampRegisterChatCommand('ginv', ginv)
   sampRegisterChatCommand('uninvite', uninvite)
-  sampRegisterChatCommand('cchat', cmd_cchat)
   sampRegisterChatCommand('z', zheal)
     sampRegisterChatCommand('sethud', function()
         if cfg.main.givra then
