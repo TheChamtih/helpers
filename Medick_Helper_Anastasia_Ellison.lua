@@ -1,5 +1,5 @@
 script_name('Medick Helper')
-script_version '3.1'
+script_version '3.2'
 local dlstatus = require "moonloader".download_status
 script_author('Pioner_Comedoz,Jon Ortiz')
 local sf = require 'sampfuncs'
@@ -1814,7 +1814,7 @@ function fthmenu(id)
     end
   },
    {
-    title = "{FFFFFF}Первая помощь при кровотечении",
+   title = "{80a4bf}»{FFFFFF} Первая помощь при {139BEC}Кровотечений",
     onclick = function()
        sampSendChat("Приветствую, коллеги. Сегодня я прочту Вам лекцию на тему «Первая помощь при кровотечении». ")
        wait(cfg.commands.zaderjka * 1300)
@@ -1854,7 +1854,7 @@ function fthmenu(id)
     end
   },
   {
-   title = "{FFFFFF}Первая помощь при сотрясении мозга",
+   title = "{80a4bf}»{FFFFFF} Первая помощь при {139BEC}Сотрясении мозга",
     onclick = function()
        sampSendChat("Приветствую, коллеги. Сегодня я прочту Вам лекцию на тему «Первая помощь при сотрясении мозга».")
        wait(cfg.commands.zaderjka * 1300) 
@@ -1888,7 +1888,7 @@ function fthmenu(id)
     end
   },
   {
-   title = "{FFFFFF}Первая помощь при обмороках",
+  title = "{80a4bf}»{FFFFFF} Первая помощь при {139BEC}Обмороках",
     onclick = function()
       sampSendChat("Приветствую, коллеги. Сегодня я прочту Вам лекцию на тему «Первая помощь при обмороках». ")
       wait(cfg.commands.zaderjka * 1300)
@@ -1928,7 +1928,7 @@ function fthmenu(id)
     end
   },
   {
-    title = "{FFFFFF}Первая помощь при переломах",
+    title = "{80a4bf}»{FFFFFF} Первая помощь при {139BEC}Переломах",
     onclick = function()
        sampSendChat("Приветствую, коллеги. Сегодня я прочту Вам лекцию на тему «Первая помощь при переломах». ")
        wait(cfg.commands.zaderjka * 1300)
@@ -1964,7 +1964,7 @@ function fthmenu(id)
     end
   },
   {
-    title = "{FFFFFF}Первая помощь при ДТП",
+    title = "{80a4bf}»{FFFFFF} Первая помощь при {139BEC}ДТП",
     onclick = function()
        sampSendChat("Приветствую, коллеги. Сегодня я прочту Вам лекцию на тему «Первая помощь при ДТП». ")
        wait(cfg.commands.zaderjka * 1300)
@@ -2331,7 +2331,7 @@ function imgui.OnDrawFrame()
 				imgui.BulletText(u8 '2.В меню Пкм+Z добавлена проверка на вирус.')
 				imgui.BulletText(u8 '3.Добавлены новые лекции и Gov.')
 				imgui.Separator()
-				imgui.BulletText(u8 '3.1')
+				imgui.BulletText(u8 '3.2')
 				imgui.BulletText(u8 '1.Возвращена настройка задержки в Настройках скрипта.')
 				imgui.BulletText(u8 '2.Добавлены новые лекции и методы лечения.')
 				imgui.BulletText(u8 '3.Доработаны задержки.')
