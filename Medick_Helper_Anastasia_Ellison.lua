@@ -1,5 +1,5 @@
 script_name('Medick Helper')
-script_version '3.5'
+script_version '3.6'
 local dlstatus = require "moonloader".download_status
 script_author('Doni_Baerra,Makar_Sheludkov')
 local sf = require 'sampfuncs'
@@ -17,6 +17,39 @@ local third_window = imgui.ImBool(false)
 local first_window = imgui.ImBool(false)
 local bMainWindow = imgui.ImBool(false)
 local sInputEdit = imgui.ImBuffer(128)
+local tCarsName = {"Landstalker", "Bravura", "Buffalo", "Linerunner", "Perrenial", "Sentinel", "Dumper", "Firetruck", "Trashmaster", "Stretch", "Manana", "Infernus",
+"Voodoo", "Pony", "Mule", "Cheetah", "Ambulance", "Leviathan", "Moonbeam", "Esperanto", "Taxi", "Washington", "Bobcat", "Whoopee", "BFInjection", "Hunter",
+"Premier", "Enforcer", "Securicar", "Banshee", "Predator", "Bus", "Rhino", "Barracks", "Hotknife", "Trailer", "Previon", "Coach", "Cabbie", "Stallion", "Rumpo",
+"RCBandit", "Romero","Packer", "Monster", "Admiral", "Squalo", "Seasparrow", "Pizzaboy", "Tram", "Trailer", "Turismo", "Speeder", "Reefer", "Tropic", "Flatbed",
+"Yankee", "Caddy", "Solair", "Berkley'sRCVan", "Skimmer", "PCJ-600", "Faggio", "Freeway", "RCBaron", "RCRaider", "Glendale", "Oceanic", "Sanchez", "Sparrow",
+"Patriot", "Quad", "Coastguard", "Dinghy", "Hermes", "Sabre", "Rustler", "ZR-350", "Walton", "Regina", "Comet", "BMX", "Burrito", "Camper", "Marquis", "Baggage",
+"Dozer", "Maverick", "NewsChopper", "Rancher", "FBIRancher", "Virgo", "Greenwood", "Jetmax", "Hotring", "Sandking", "BlistaCompact", "PoliceMaverick",
+"Boxvillde", "Benson", "Mesa", "RCGoblin", "HotringRacerA", "HotringRacerB", "BloodringBanger", "Rancher", "SuperGT", "Elegant", "Journey", "Bike",
+"MountainBike", "Beagle", "Cropduster", "Stunt", "Tanker", "Roadtrain", "Nebula", "Majestic", "Buccaneer", "Shamal", "hydra", "FCR-900", "NRG-500", "HPV1000",
+"CementTruck", "TowTruck", "Fortune", "Cadrona", "FBITruck", "Willard", "Forklift", "Tractor", "Combine", "Feltzer", "Remington", "Slamvan", "Blade", "Freight",
+"Streak", "Vortex", "Vincent", "Bullet", "Clover", "Sadler", "Firetruck", "Hustler", "Intruder", "Primo", "Cargobob", "Tampa", "Sunrise", "Merit", "Utility", "Nevada",
+"Yosemite", "Windsor", "Monster", "Monster", "Uranus", "Jester", "Sultan", "Stratum", "Elegy", "Raindance", "RCTiger", "Flash", "Tahoma", "Savanna", "Bandito",
+"FreightFlat", "StreakCarriage", "Kart", "Mower", "Dune", "Sweeper", "Broadway", "Tornado", "AT-400", "DFT-30", "Huntley", "Stafford", "BF-400", "NewsVan",
+"Tug", "Trailer", "Emperor", "Wayfarer", "Euros", "Hotdog", "Club", "FreightBox", "Trailer", "Andromada", "Dodo", "RCCam", "Launch", "PoliceCar", "PoliceCar",
+"PoliceCar", "PoliceRanger", "Picador", "S.W.A.T", "Alpha", "Phoenix", "GlendaleShit", "SadlerShit", "Luggage A", "Luggage B", "Stairs", "Boxville", "Tiller",
+"UtilityTrailer"}
+local tCarsTypeName = {"Автомобиль", "Мотоицикл", "Вертолёт", "Самолёт", "Прицеп", "Лодка", "Другое", "Поезд", "Велосипед"}
+local tCarsSpeed = {43, 40, 51, 30, 36, 45, 30, 41, 27, 43, 36, 61, 46, 30, 29, 53, 42, 30, 32, 41, 40, 42, 38, 27, 37,
+54, 48, 45, 43, 55, 51, 36, 26, 30, 46, 0, 41, 43, 39, 46, 37, 21, 38, 35, 30, 45, 60, 35, 30, 52, 0, 53, 43, 16, 33, 43,
+29, 26, 43, 37, 48, 43, 30, 29, 14, 13, 40, 39, 40, 34, 43, 30, 34, 29, 41, 48, 69, 51, 32, 38, 51, 20, 43, 34, 18, 27,
+17, 47, 40, 38, 43, 41, 39, 49, 59, 49, 45, 48, 29, 34, 39, 8, 58, 59, 48, 38, 49, 46, 29, 21, 27, 40, 36, 45, 33, 39, 43,
+43, 45, 75, 75, 43, 48, 41, 36, 44, 43, 41, 48, 41, 16, 19, 30, 46, 46, 43, 47, -1, -1, 27, 41, 56, 45, 41, 41, 40, 41,
+39, 37, 42, 40, 43, 33, 64, 39, 43, 30, 30, 43, 49, 46, 42, 49, 39, 24, 45, 44, 49, 40, -1, -1, 25, 22, 30, 30, 43, 43, 75,
+36, 43, 42, 42, 37, 23, 0, 42, 38, 45, 29, 45, 0, 0, 75, 52, 17, 32, 48, 48, 48, 44, 41, 30, 47, 47, 40, 41, 0, 0, 0, 29, 0, 0
+}
+local tCarsType = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1,
+3, 1, 1, 1, 1, 6, 1, 1, 1, 1, 5, 1, 1, 1, 1, 1, 7, 1, 1, 1, 1, 6, 3, 2, 8, 5, 1, 6, 6, 6, 1,
+1, 1, 1, 1, 4, 2, 2, 2, 7, 7, 1, 1, 2, 3, 1, 7, 6, 6, 1, 1, 4, 1, 1, 1, 1, 9, 1, 1, 6, 1,
+1, 3, 3, 1, 1, 1, 1, 6, 1, 1, 1, 3, 1, 1, 1, 7, 1, 1, 1, 1, 1, 1, 1, 9, 9, 4, 4, 4, 1, 1, 1,
+1, 1, 4, 4, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 7, 1, 1, 1, 1, 8, 8, 7, 1, 1, 1, 1, 1, 1, 1,
+1, 3, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 7, 1, 1, 1, 1, 8, 8, 7, 1, 1, 1, 1, 1, 4,
+1, 1, 1, 2, 1, 1, 5, 1, 2, 1, 1, 1, 7, 5, 4, 4, 7, 6, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 5, 5, 5, 1, 5, 5
+}
 local bIsEnterEdit = imgui.ImBool(false)
 local ystwindow = imgui.ImBool(false)
 local helps = imgui.ImBool(false)
@@ -250,6 +283,7 @@ function main()
   sampRegisterChatCommand('invite', invite)
   sampRegisterChatCommand('blg', blg)
   sampRegisterChatCommand('oinv', oinv)
+  sampRegisterChatCommand('fgv', fgiverank)
   sampRegisterChatCommand('zinv', zinv)
   sampRegisterChatCommand('ginv', ginv)
   sampRegisterChatCommand('uninvite', uninvite)
@@ -472,7 +506,7 @@ function dlog()
 end
 function yvig(pam)
   local id, pric = string.match(pam, '(%d+)%s+(.+)')
-  if rank == 'Психолог' or rank == '' or rank == 'Зам.Глав.Врача' or  rank == 'Главный Врач' or  rank == 'Доктор' then
+  if rank == 'Психолог' or rank == 'Хирург' or rank == 'Зам.Глав.Врача' or  rank == 'Главный Врач' or  rank == 'Доктор' then
   if id == nil then
     sampAddChatMessage("{9966cc}Medick Helper {ffffff}| Введите: /yvig [ID] [Причина]", -1)
   end
@@ -500,7 +534,7 @@ end
 
 function vig(pam)
   local id, pric = string.match(pam, '(%d+)%s+(.+)')
-  if rank == 'Психолог' or rank == '' or rank == 'Зам.Глав.Врача' or  rank == 'Главный Врач' or  rank == 'Доктор' then
+  if rank == 'Психолог' or rank == 'Хирург' or rank == 'Зам.Глав.Врача' or  rank == 'Главный Врач' then
   if id == nil then
     sampAddChatMessage("{9966cc}Medick Helper {ffffff}| Введите: /vig [ID] [Причина]", -1)
   end
@@ -734,7 +768,7 @@ function invite(pam)
         if id then
 		if sampIsPlayerConnected(id) then
                 sampSendChat('/me достал(а) бейджик и передал(а) его '..sampGetPlayerNickname(id):gsub('_', ' ')..'')
-				wait(4000)
+				wait(3000)
 				sampSendChat(string.format('/invite %s', id))
 			else
 			ftext('Игрок с данным ID не подключен к серверу или указан ваш ID')
@@ -859,7 +893,6 @@ end
 	end
 	  end)
    end
-
  function oinv(pam)
     lua_thread.create(function()
         local id = pam:match('(%d+)')
@@ -894,11 +927,11 @@ end
  function uninvite(pam)
     lua_thread.create(function()
         local id, pri4ina = pam:match('(%d+)%s+(.+)')
-	  if rank == 'Хирург' or rank == 'Зам.Глав.Врача' or  rank == 'Глав.Врач' or rank == 'Психолог' then
+	  if rank == 'Хирург' or rank == 'Зам.Глав.Врача' or  rank == 'Глав.Врач' then
         if id and pri4ina then
 		if sampIsPlayerConnected(id) then
                 sampSendChat('/me забрал(а) форму и бейджик у '..sampGetPlayerNickname(id):gsub('_', ' ')..'')
-				wait(4000)
+				wait(3000)
 				sampSendChat(string.format('/uninvite %s %s', id, pri4ina))
 			else
 			ftext('Игрок с данным ID не подключен к серверу или указан ваш ID')
@@ -1165,7 +1198,7 @@ function otmenu(id)
     wait(5000)
     sampSendChat(string.format('/r [%s]: В Control Room производится пополнение сотрудников.', cfg.main.tarr))
     wait(5000)
-    sampSendChat(string.format('/r [%s]: Вступить в отдел можно с должности "Интерн".', cfg.main.tarr))
+    sampSendChat(string.format('/r [%s]: Вступить в отдел можно с должности "Мед.Брат".', cfg.main.tarr))
     wait(5000)
     sampSendChat(string.format('/r [%s]: Для подробной информации пишите на п.'..myid..'.', cfg.main.tarr))
 	end
@@ -1198,10 +1231,12 @@ function sobesedmenu(id)
         sampSendChat("Ваш паспорт и диплом,пожалуйста.")
 		wait(3000)
 		sampSendChat("/b /showpass "..myid.."")
+		wait(3000)
+		sampSendChat("/b Диплом по РП.")
         end
       },
 	  {
-        title = '{80a4bf}» {ffffff}Заявка на офф.портал на Нарколога{ff0000}ЕСЛИ 8 лет в штате.',
+        title = '{80a4bf}» {ffffff}Заявка на офф.портал на Нарколога{ff0000}ЕСЛИ 6 лет в штате.',
         onclick = function()
 		local _, myid = sampGetPlayerIdByCharHandle(PLAYER_PED)
         sampSendChat("Вы можете оставить заявление на офф.портале, на должность Нарколог, а можете сейчас на интерна.")
@@ -1287,7 +1322,7 @@ function govmenu(id)
 	local _, myid = sampGetPlayerIdByCharHandle(PLAYER_PED)
 	local myname = sampGetPlayerNickname(myid)
 	sampSendChat("/d OG,вещаю")
-        wait(cfg.commands.zaderjka * 1300)
+      wait(cfg.commands.zaderjka * 1300)
 		sampSendChat("/me достал КПК, после чего подключился к гос. волне новостей")
 		wait(cfg.commands.zaderjka * 1300)
         sampSendChat("/gov [MOH]: Уважаемые жители и гости штата, минуточку внимания! ")
@@ -1301,7 +1336,8 @@ function govmenu(id)
 		sampSendChat('/gov [MOH]: С Уважением, '..rank..' Больницы г. Los-Santos - '..myname:gsub('_', ' ')..'.')
 		wait(cfg.commands.zaderjka * 1300)
         sampSendChat("/d OG,освободил гос.волну.")
-		wait(1200)
+		wait(1000)
+		sampAddChatMessage("{F80505}Не забудь {F80505}добавить {0CF513} /addvacancy!", -1) 
         end
    },
     {
@@ -1412,6 +1448,29 @@ function govmenu(id)
         sampSendChat('/gov [МОН] Будьте осторожны, носите маски и держите дистанцию,так же не забывайте мыть руки с мылом.')
 		wait(cfg.commands.zaderjka * 1300)
         sampSendChat('/gov [МОН] Про вирус вы сможете узнать, на офф.портале штата!')
+		wait(cfg.commands.zaderjka * 1300)
+		sampSendChat('/gov [MOH]:С Уважением, '..rank..' Больницы города Los-Santos - '..myname:gsub('_', ' ')..'. ')
+		wait(cfg.commands.zaderjka * 1300)
+		sampSendChat('/gov [МОН] Будьте здоровы, Не болейте!')
+		wait(cfg.commands.zaderjka * 1300)
+        sampSendChat("/d OG,освободил гос.волну.")
+		wait(1200)
+		end
+   },
+    {
+   title = "{80a4bf}»{FFFFFF} Система {fb05d6}рефералов:",
+    onclick = function()
+	local _, myid = sampGetPlayerIdByCharHandle(PLAYER_PED)
+	local myname = sampGetPlayerNickname(myid)
+	sampSendChat("/d OG,вещаю")
+        wait(cfg.commands.zaderjka * 1300)
+		sampSendChat("/me достал КПК, после чего подключился к гос. волне новостей")
+		wait(cfg.commands.zaderjka * 1300)
+        sampSendChat("/gov [МОН] Уважаемые жители штата, минуточку внимание!")
+        wait(cfg.commands.zaderjka * 1300)
+		sampSendChat('/gov [MOH] В центральной больнице города Los-Santos`a действует реферальная система.')
+		wait(cfg.commands.zaderjka * 1300)
+        sampSendChat('/gov [MOH]: С данной системой вы можете ознакомиться на оф.портале больницы.')
 		wait(cfg.commands.zaderjka * 1300)
 		sampSendChat('/gov [MOH]:С Уважением, '..rank..' Больницы города Los-Santos - '..myname:gsub('_', ' ')..'. ')
 		wait(cfg.commands.zaderjka * 1300)
@@ -1863,7 +1922,7 @@ function fthmenu(id)
     onclick = function()
 	    sampSendChat("Приветствую Вас в Министерстве Здравоохранения ")
         wait(cfg.commands.zaderjka * 1300)
-        sampSendChat(" Попадая в MOH, вы автоматически определяетесь в отдел CR.  ")
+        sampSendChat(" Попадая в MOH, вы автоматически определяетесь на стажировку.")
         wait(cfg.commands.zaderjka * 1300)
         sampSendChat("Задача-оказание врачебной помощи пациентам, работа на постах и патрулях.  ")
         wait(cfg.commands.zaderjka * 1300)
@@ -1873,7 +1932,7 @@ function fthmenu(id)
         wait(cfg.commands.zaderjka * 1300)
         sampSendChat("Вам выдали рацию, которую вы должны настроить на волну МЗ.  ")
         wait(cfg.commands.zaderjka * 1300)
-        sampSendChat("/b /r [Employee CR] - ваш ТЭГ. Доклады о проделанной работе делаются по запросу в рацию. ")
+        sampSendChat("Доклады о проделанной работе делаются по запросу в рацию.")
         wait(cfg.commands.zaderjka * 1300)
         sampSendChat("Основная суть: Вы берете карету скорой помощи и выезжаете на пост.  ")
          wait(cfg.commands.zaderjka * 1300)
@@ -1891,11 +1950,11 @@ function fthmenu(id)
         wait(cfg.commands.zaderjka * 1300)
         sampSendChat("Сейчас покажу пример доклада в рацию.")
         wait(cfg.commands.zaderjka * 1300)
-        sampSendChat('/b /r [Employee CR] Выезжаю на пост "Мэрия". Напарник - ".."')
+        sampSendChat('/b /r Выезжаю на пост "Мэрия". Напарник - ".."')
         wait(cfg.commands.zaderjka * 1300)
-        sampSendChat('/b /r [Employee CR] Докладываю пост "Мэрия" Вылечено 0 | Вызовов 0 | Справок 0 | Сеансов 0.')
+        sampSendChat('/b /r Докладываю пост "Мэрия" Вылечено 0 | Вызовов 0 | Справок 0 | Сеансов 0.')
         wait(cfg.commands.zaderjka * 1300)
-        sampSendChat('/b /r [Employee CR] Покинул пост "Мэрия" по причине: "..."')
+        sampSendChat('/b /r  Покинул пост "Мэрия" по причине: "..."')
         wait(cfg.commands.zaderjka * 1300)
 		sampSendChat("Что касательно дежурства на регистратуре. ")
         wait(cfg.commands.zaderjka * 1300)
@@ -2490,19 +2549,45 @@ function imgui.OnDrawFrame()
     imgui.End()
   end
   	if infbar.v then
-                _, myid = sampGetPlayerIdByCharHandle(PLAYER_PED)
-                local myname = sampGetPlayerNickname(myid)
-                local myping = sampGetPlayerPing(myid)
-                imgui.SetNextWindowPos(imgui.ImVec2(cfg.main.posX, cfg.main.posY), imgui.ImVec2(0.6, 0.6))
-                imgui.SetNextWindowSize(imgui.ImVec2(cfg.main.widehud, 170), imgui.Cond.FirstUseEver)
-                imgui.Begin('Medic Tools', infbar, imgui.WindowFlags.NoResize + imgui.WindowFlags.NoCollapse + imgui.WindowFlags.NoTitleBar)
-                imgui.CentrText('Medic Tools')
-                imgui.Separator()
-                imgui.Text((u8"Информация: %s [%s] | Пинг: %s"):format(myname, myid, myping))
-				imgui.Text((u8"Вылечино: %s "):format(healh))
-				imgui.Text((u8"Вылечино от наркозависимости: %s "):format(narkoh))
-                imgui.End()
-    end
+            _, myid = sampGetPlayerIdByCharHandle(PLAYER_PED)
+            local myname = sampGetPlayerNickname(myid)
+            local myping = sampGetPlayerPing(myid)
+            local valid, ped = getCharPlayerIsTargeting(PLAYER_HANDLE)
+            imgui.SetNextWindowPos(imgui.ImVec2(cfg.main.posX, cfg.main.posY), imgui.ImVec2(0.5, 0.5))
+            imgui.SetNextWindowSize(imgui.ImVec2(cfg.main.widehud, 155), imgui.Cond.FirstUseEver)
+            imgui.Begin('Medic Helper', infbar, imgui.WindowFlags.NoResize + imgui.WindowFlags.NoCollapse + imgui.WindowFlags.NoTitleBar)
+            imgui.CentrText('Medic Helper')
+            imgui.Separator()
+            imgui.Text((u8"Информация: %s [%s] | Пинг: %s"):format(myname, myid, myping))
+            if isCharInAnyCar(playerPed) then
+                local vHandle = storeCarCharIsInNoSave(playerPed)
+                local result, vID = sampGetVehicleIdByCarHandle(vHandle)
+                local vHP = getCarHealth(vHandle)
+                local carspeed = getCarSpeed(vHandle)
+                local speed = math.floor(carspeed)
+                local vehName = tCarsName[getCarModel(storeCarCharIsInNoSave(playerPed))-399]
+                local ncspeed = math.floor(carspeed*2)
+                imgui.Text((u8 'Транспорт: %s [%s]|HP: %s|Скорость: %s'):format(vehName, vID, vHP, ncspeed))
+            else
+                imgui.Text(u8 'Транспорт: Нет')
+            end
+			    imgui.Text((u8 'Время: %s'):format(os.date('%H:%M:%S')))
+            if valid and doesCharExist(ped) then 
+                local result, id = sampGetPlayerIdByCharHandle(ped)
+                if result then
+                    local targetname = sampGetPlayerNickname(id)
+                    local targetscore = sampGetPlayerScore(id)
+                    imgui.Text((u8 'Цель: %s [%s] | Уровень: %s'):format(targetname, id, targetscore))
+                else
+                    imgui.Text(u8 'Цель: Нет')
+                end
+            else
+                imgui.Text(u8 'Цель: Нет')
+            end
+			imgui.Text((u8 'Квадрат: %s'):format(u8(kvadrat())))
+            saveData(cfg, 'moonloader/config/medictools/config.json')
+            imgui.End()
+        end
     if obnova.v then
                 local iScreenWidth, iScreenHeight = getScreenResolution()
                 imgui.SetNextWindowPos(imgui.ImVec2(iScreenWidth / 2, iScreenHeight / 2), imgui.Cond.FirstUseEver, imgui.ImVec2(7, 3))
@@ -2822,6 +2907,16 @@ function pkmmenu(id)
         end
       },
 	  {
+		title = "{80a4bf}»{FFFFFF} Вопросы по Уставу/Расценки {ff0000}(Ст.Состава)",
+		onclick = function()
+		if rank == 'Психолог' or rank == 'Хирург' or rank == 'Зам.Гл.Врача' or  rank == 'Гл.Врач' then
+		submenus_show(ustav(id), "{9966cc}Medick Helper {ffffff}| {"..color.."}"..sampGetPlayerNickname(id).."["..id.."]")
+		else
+		ftext('Вы не находитесь в Ст.Составе')
+		end
+		end
+   },
+	  {
         title = "{80a4bf}» {ffffff}Призыв меню",
         onclick = function()
         pID = tonumber(args)
@@ -2836,10 +2931,14 @@ function pkmmenu(id)
         end
       },
 	  {
-        title = "{80a4bf}» {ffffff}Меню собеседования",
+        title = "{80a4bf}» {ffffff}Меню собеседования {ff0000}(Ст.Состава)",
         onclick = function()
         pID = tonumber(args)
-        submenus_show(sobesedmenu(id), "{9966cc}Medick Helper {ffffff}| {"..color.."}"..sampGetPlayerNickname(id).."["..id.."] ")
+        if rank == 'Психолог' or rank == 'Хирург' or rank == 'Зам.Гл.Врача' or  rank == 'Гл.Врач' then
+		submenus_show(sobesedmenu(id), "{9966cc}Medick Helper {ffffff}| {"..color.."}"..sampGetPlayerNickname(id).."["..id.."] ")
+		else
+		ftext('Вы не находитесь в Ст.Составе')
+		end
         end
       },
 	  {
@@ -2850,6 +2949,109 @@ function pkmmenu(id)
         end
       },
 	}
+end
+function ustav(id)
+    return
+    {
+      {
+        title = '{5b83c2}« Раздел Устава »',
+        onclick = function()
+        end
+      },
+      {
+        title = '{80a4bf}» {ffffff}Со скольки и до скольки начинается рабочий день в будни и в выходные ?',
+        onclick = function()
+        sampSendChat("Со скольки и до скольки начинается рабочий день в будни и в выходные ?")
+		wait(1500)
+		ftext("{FFFFFF}- Правильный ответ: {A52A2A}В будни с 09:00 до 20:00, в выходные с 09:00 до 19:00.", -1)
+		end
+      },
+      {
+        title = '{80a4bf}» {ffffff}Сколько дается сотруднику времени чтобы прибыть на работы?',
+        onclick = function()
+        sampSendChat("Сколько деться сотруднику времени чтобы прибыть на работы ?")
+		wait(500)
+		ftext("{FFFFFF}- Правильный ответ: {A52A2A}15 Минут.", -1)
+		end
+      },
+	  {
+        title = '{80a4bf}» {ffffff} С какой должности разрешено использовать и носить огнестрельное оружие?',
+        onclick = function()
+        sampSendChat(" С какой должности разрешено использовать и носить огнестрельное оружие?")
+		wait(1500)
+		ftext("{FFFFFF}- Правильный ответ: {A52A2A}С должности Психолог.", -1)
+		end
+      },
+	  {
+        title = '{80a4bf}» {ffffff}С какой должности разрешено использовать служебный вертолет?',
+        onclick = function()
+        sampSendChat("С какой должности разрешено использовать служебный вертолет?")
+		wait(1500)
+		ftext("{FFFFFF}- Правильный ответ: {A52A2A}С психолога, по разрешению {ff0000}рук-во с доктора.", -1)
+		end
+      },
+	  {
+        title = '{80a4bf}» {ffffff}Три пункта которые запрещены сотруднику.',
+        onclick = function()
+        sampSendChat("Назови три пункта что запрещено сотруднику.")
+		wait(1500)
+		ftext("{FFFFFF}- Правильный ответ: {A52A2A}Ответ может быть разным.", -1)
+		end
+      },
+	  {
+        title = '{80a4bf}» {ffffff}Для выхода из ЧС сколько нарушителю нужно внести в фонд Министерства Здравоохранения?',
+        onclick = function()
+        sampSendChat("Для выхода из ЧС сколько нарушителю нужно внести в фонд Министерства Здравоохранения?")
+		wait(1500)
+		ftext("{FFFFFF}- Правильный ответ: {A52A2A}от {ff0000}100.000 до {ff0000}150.000 вирт.", -1)
+		end
+      },
+	  {
+        title = '{5b83c2}« Раздел вопросов по медикаментам »',
+        onclick = function()
+        end
+	  },
+	  {
+        title = '{80a4bf}» {ffffff}Какой препарат дают от боли в животе ?',
+        onclick = function()
+        sampSendChat("Какой препарат дают от боли в животе?")
+		wait(1500)
+		ftext("{FFFFFF}- Правильный ответ: {A52A2A}Но-шпа, Дротаверин, Кеторолак, Спазмалгон, Кетанов.", -1)
+		end
+      },
+	  {
+        title = '{80a4bf}» {ffffff}Какой препарат дают при боли в голове?',
+        onclick = function()
+        sampSendChat("Какой препарат дают при боли в голове?")
+		wait(1500)
+		ftext("{FFFFFF}- Правильный ответ: {A52A2A}Аспирин, Анальгин, Цитрамон, Диклофенак, Пенталгин.", -1)
+		end
+      },
+	  {
+        title = '{80a4bf}» {ffffff}Какой препарат дают при наркозависимости?',
+        onclick = function()
+        sampSendChat("Какой препарат дают при наркозависимости?")
+		wait(1500)
+		ftext("{FFFFFF}- Правильный ответ: {A52A2A}Парацетамол, Ибупрофен, Панадол.", -1)
+		end
+      },
+	  {
+        title = '{80a4bf}» {ffffff}Какой препарат дают при Температуре?',
+        onclick = function()
+        sampSendChat("Какой препарат дают при Температуре?")
+		wait(1500)
+		ftext("{FFFFFF}- Правильный ответ: {A52A2A}Морфин, Кодеин, Федрин, Феназепам.", -1)
+		end
+      },
+	  {
+        title = '{80a4bf}» {ffffff}Какой препарат дают при Кашле?',
+        onclick = function()
+        sampSendChat("Какой препарат дают при Кашле?")
+		wait(1500)
+		ftext("{FFFFFF}- Правильный ответ: {A52A2A}Мукалтин, Бромгексин, Коделак, АЦЦ.", -1)
+		end
+      },
+    }
 end
 function saveData(table, path)
 	if doesFileExist(path) then os.remove(path) end
@@ -2921,41 +3123,41 @@ function oformenu(id)
         title = '{80a4bf}» {ffffff}Лечение.',
         onclick = function()
 		  sampSendChat("/do Через плечо врача накинута мед. сумка на ремне.")
-		  wait(3000)
+		  wait(2000)
           sampSendChat("/me достал из мед.сумки лекарство и бутылочку воды")
-          wait(3000)
+          wait(2000)
 		  sampSendChat('/me передал лекарство и бутылочку воды '..sampGetPlayerNickname(id):gsub('_', ' ')..'')
 		  wait(1100)
-		  sampSendChat("/heal "..id)
+		  sampSendChat("/heal "..id) 
 		  end
       },
 	  {
         title = '{80a4bf}» {ffffff}Справка',
         onclick = function()
 		sampSendChat("/do На столе стоит ящик с мед.картами и неврологическим молоточком.")
-        wait(5000)
+        wait(3000)
         sampSendChat(" Имеете ли Вы жалобы на здоровье?")
-        wait(5000)
+        wait(3000)
         sampSendChat("/do В левой руке чёрная ручка.")
-        wait(5000)
+        wait(3000)
         sampSendChat("/me сделал запись в мед.карте")
-        wait(5000)
+        wait(3000)
         sampSendChat("/me достал из ящика неврологический молоточек")
-        wait(5000)
+        wait(3000)
         sampSendChat("Присаживайтесь, начнем обследование.")
-        wait(5000)
+        wait(3000)
         sampSendChat("/me достал из ящика неврологический молоточек")
-        wait(5000)
+        wait(3000)
         sampSendChat('/me водит молоточком перед глазами '..sampGetPlayerNickname(id):gsub('_', ' ')..'')
-        wait(5000)
+        wait(3000)
         sampSendChat("/me убедился, что зрачки движутся содружественно и рефлекс в норме")
-        wait(5000)
+        wait(3000)
         sampSendChat("/me сделал запись в мед.карте")
-        wait(5000)
+        wait(3000)
         sampSendChat('/me ударил молоточком по левому колену '..sampGetPlayerNickname(id):gsub('_', ' ')..'')
-        wait(5000)
+        wait(3000)
         sampSendChat('/me ударил молоточком по правому колену '..sampGetPlayerNickname(id):gsub('_', ' ')..'')
-        wait(5000)
+        wait(3000)
 		sampSendChat("/checkheal "..id)
 		end
       },
@@ -2963,15 +3165,15 @@ function oformenu(id)
         title = '{ffffff}» Обработка ватки нашатырём',
         onclick = function()
         sampSendChat("/me открыл аптечку")
-        wait(4000) 
+        wait(3000) 
         sampSendChat("/me достал из аптечки ватку и нашатырь")
-        wait(4000) 
+        wait(3000) 
         sampSendChat("/me обработал ватку нашатырем, после чего поднес к носу пострадавшего")
-        wait(4000) 
+        wait(3000) 
         sampSendChat("/me водит ваткой вокруг носа")
-        wait(4000) 
+        wait(3000) 
         sampSendChat("Не волнуйтесь, у вас случился в обморок.")
-        wait(4000) 
+        wait(3000) 
         sampSendChat("Сейчас мы доставим вас в больницу, где разберемся с причиной данного недуга.") 
 		end
       },
@@ -2979,22 +3181,22 @@ function oformenu(id)
         title = '{80a4bf}» {ffffff}Лечение от наркозависимости',
         onclick = function()
 		sampSendChat("/do Через плечо врача накинута мед.сумка на ремне.")
-        wait(5000)
+        wait(3000)
         sampSendChat("/me достал из мед.сумки вату, спирт, шприц и препарат")
-        wait(5000)
+        wait(3000)
 		sampSendChat("/me пропитал вату спиртом")
-		wait(5000)
+		wait(3000)
 		sampSendChat("/do Пропитанная спиртом вата в левой руке.")
-		wait(5000)
+		wait(3000)
 		sampSendChat('/me обработал ватой место укола на вене '..sampGetPlayerNickname(id):gsub('_', ' ')..'')
-		wait(5000)
+		wait(3000)
 		sampSendChat("/do Шприц и препарат в правой руке.")
-        wait(5000)
+        wait(3000)
 		sampSendChat('/me аккуратным движением вводит препарат в вену '..sampGetPlayerNickname(id):gsub('_', ' ')..'')
-        wait(5000)
+        wait(3000)
 		sampSendChat("/todo Ну вот и всё*вытащив шприц из вены и приложив вату к месту укола.")
-        wait(5000)
-        sampSendChat("/healaddict " .. id .. "  7000")
+        wait(3000)
+        sampSendChat("/healaddict " .. id .. "  10000")
 		end
       }
     }
@@ -3011,15 +3213,15 @@ function renmenu(args)
         title = '{ffffff}» Рентгеновский аппарат',
         onclick = function()
         sampSendChat("Ложитесь на кушетку и лежите смирно.")
-        wait(5000) 
+        wait(3000) 
         sampSendChat("/me включил рентгеновский аппарат")
-        wait(5000) 
+        wait(3000) 
         sampSendChat("/do Рентгеновский аппарат зашумел.")
-        wait(5000) 
+        wait(3000) 
         sampSendChat("/me провел рентгеновским аппаратом по поврежденному участку")
-        wait(5000) 
+        wait(3000) 
         sampSendChat("/me рассматривает снимок")
-        wait(5000) 
+        wait(3000) 
         sampSendChat("/try обнаружил перелом") 
 		end
       },
@@ -3032,23 +3234,23 @@ function renmenu(args)
         title = '{ffffff}» Перелом конечностей',
         onclick = function()
         sampSendChat("Садитесь на кушетку.")
-        wait(5000) 
+        wait(3000) 
         sampSendChat("/me взял со стола перчатки и надел их")
-        wait(5000) 
+        wait(3000) 
         sampSendChat("/do Рентгеновский аппарат зашумел.")
-        wait(5000) 
+        wait(3000) 
         sampSendChat("/me взял шприц с обезбаливающим, после чего обезболил поврежденный участок")
-        wait(5000) 
+        wait(3000) 
         sampSendChat("/me провел репозицию поврежденного участка")
-        wait(5000) 
+        wait(3000) 
         sampSendChat("/me подготовил гипсовый пороошок")
-        wait(5000) 
+        wait(3000) 
         sampSendChat("/me раскатил бинт вдоль стола, после чего втер гипсовый раствор")
-        wait(5000) 
+        wait(3000) 
         sampSendChat("/me свернул бинт, после чего зафиксировал перелом")
-        wait(5000) 
+        wait(3000) 
         sampSendChat("Приходите через месяц. Всего доброго!")
-        wait(5000) 
+        wait(3000) 
         sampSendChat("/me снял перчатки и бросил их в урну возле стола") 
 		end
       },
@@ -3061,29 +3263,29 @@ function renmenu(args)
         title = '{ffffff}» Перелом позвоночника/ребер',
         onclick = function()
         sampSendChat("/me осторожно уклал пострадавшего на операционный стол")
-        wait(5000) 
+        wait(3000) 
         sampSendChat("/me взял со стола перчатки и надел их")
-        wait(5000) 
+        wait(3000) 
         sampSendChat("/me подключил пострадавшего к капельнице")
-        wait(5000) 
+        wait(3000) 
         sampSendChat("/me намочил ватку спиртом и обработал кожу на руке пациента")
-        wait(5000) 
+        wait(3000) 
         sampSendChat("/me внутривенно ввел Фторотан")
-        wait(5000) 
+        wait(3000) 
         sampSendChat("/do Наркоз начинает действовать, пациент потерял сознание.")
-        wait(5000) 
+        wait(3000) 
         sampSendChat("/me достал скальпель и пинцет")
-        wait(5000) 
+        wait(3000) 
         sampSendChat("/me с помощью различных инструментов произвел репозицию поврежденного участка")
-        wait(5000) 
+        wait(3000) 
         sampSendChat("/me достал из тумбочки специальный корсет")
-        wait(5000) 
+        wait(3000) 
         sampSendChat("/me зафиксировал поврежденный участок с помощью карсета")
-        wait(5000) 
+        wait(3000) 
         sampSendChat("/me снял перчатки и бросил их в урну возле стола")
-        wait(5000) 
+        wait(3000) 
         sampSendChat("/me убрал в отдельный контейнер грязный инструментарий")
-        wait(5000) 
+        wait(3000) 
         sampSendChat("/do Прошло некоторое время, пациент пришел в сознание.") 
 		end
       },
@@ -3096,29 +3298,29 @@ function renmenu(args)
         title = '{ffffff}» Глубокий порез',
         onclick = function()
         sampSendChat("/me взял со стола перчатки и надел их")
-        wait(5000) 
+        wait(3000) 
         sampSendChat("/me провел осмотр пациента")
-        wait(5000) 
+        wait(3000) 
         sampSendChat("/me определил степень тяжести пореза у пациента")
-        wait(5000) 
+        wait(3000) 
         sampSendChat("/me обезболил поврежденный участок")
-        wait(5000) 
+        wait(3000) 
         sampSendChat("/me достал из мед. сумки жгут и наложил его поверх повреждения")
-        wait(5000) 
+        wait(3000) 
         sampSendChat("/me разложил хирургические инструменты на столе")
-        wait(5000) 
+        wait(3000) 
         sampSendChat("/me взял специальные иглу и нити")
-        wait(5000) 
+        wait(3000) 
         sampSendChat("/me зашил кровеносный сосуд и проверил пульс")
-        wait(5000) 
+        wait(3000) 
         sampSendChat("/me протер кровь и зашил место пореза")
-        wait(5000) 
+        wait(3000) 
         sampSendChat("/me отложил иглу и нити в сторону")
-        wait(5000) 
+        wait(3000) 
         sampSendChat("/me снял жгут, взял бинты и перебинтовал поврежденный участок кожи")
-        wait(5000) 
+        wait(3000) 
         sampSendChat("До свадьбы заживет, удачного дня, не болейте.")
-        wait(5000) 
+        wait(3000) 
         sampSendChat("/me убрал в отдельный контейнер грязный инструментарий") 
 		end
       },
@@ -3131,20 +3333,20 @@ function priziv(id)
         title = '{80a4bf}» {ffffff}Приветствие',
         onclick = function()
 		sampSendChat("Добрый день, приветствую вас на призыве.")
-        wait(3000)
+        wait(2000)
 		sampSendChat("Будте добры предоставить документы потверждающии вашу личность.")
-        wait(3000)
+        wait(2000)
 		end
       },
 	  {
         title = '{80a4bf}» {ffffff}Паспорт(РП)',
         onclick = function()
 		sampSendChat("/me протянул левую руку и взял паспорт у человека на против.")
-        wait(4000)
+        wait(3000)
 		sampSendChat("/do Паспорт в левой руке.")
         wait(3000)
 		sampSendChat("/me открыл паспорт на нужной странице и запомнил данные человека.")
-        wait(4000)
+        wait(3000)
 		sampSendChat("/me закрыл паспорт.")
         wait(3000)
 		sampSendChat("/do Паспорт закрыт.")
@@ -3157,23 +3359,23 @@ function priziv(id)
         title = '{80a4bf}» {ffffff}Проверка на призыве',
         onclick = function()
 		sampSendChat("- Хорошо. Сейчас мы проверим Вас на наличие наркозависимости.")
-        wait(6000)
+        wait(3000)
         sampSendChat("/do Через плечо врача накинута мед.сумка на ремне.")
-        wait(5000)
+        wait(3000)
         sampSendChat("/me достал из мед.сумки вату, спирт, шприц и специальную колбочку")
-        wait(5000)
+        wait(3000)
         sampSendChat("/me пропитал вату спиртом")
-        wait(5000)
+        wait(3000)
         sampSendChat("/do Пропитанная спиртом вата в левой руке.")
-        wait(5000)
+        wait(3000)
         sampSendChat('/me обработал ватой место укола на вене '..sampGetPlayerNickname(id):gsub('_', ' ')..'')
-        wait(5000)
+        wait(3000)
         sampSendChat("/do Шприц и специальная колбочка в правой руке.")
-        wait(5000)
+        wait(3000)
         sampSendChat('/me аккуратным движением вводит шприц в вену '..sampGetPlayerNickname(id):gsub('_', ' ')..'')
-        wait(5000)
+        wait(3000)
         sampSendChat("/me с помощью шприца взял немного крови для анализа")
-        wait(5000)
+        wait(3000)
         sampSendChat("/me перелил кровь из шприца в специальную колбу, затем поместил её в мини-лабораторию")
         wait(1300)
 		sampSendChat("/checkheal "..id)
@@ -3183,11 +3385,11 @@ function priziv(id)
         title = '{80a4bf}» {ffffff} Годен',
         onclick = function()
 		sampSendChat('/do На экране показан отрицательный результат теста крови '..sampGetPlayerNickname(id):gsub('_', ' ')..'')
-        wait(5000)
+        wait(3000)
         sampSendChat("/me выписал справку о том, что пациент не имеет наркозависимости и годен к службе.")
-        wait(5000)
+        wait(3000)
 		sampSendChat("/me передал справку пациенту в руки")
-		wait(5000)
+		wait(3000)
 		sampSendChat("/do Протянута правая рука со справкой.")
 		end
       },
@@ -3195,9 +3397,9 @@ function priziv(id)
         title = '{80a4bf}» {ffffff} Не Годен',
         onclick = function()
 		sampSendChat('/do На экране показан положительный результат теста крови '..sampGetPlayerNickname(id):gsub('_', ' ')..'')
-        wait(5000)
+        wait(3000)
         sampSendChat("Вы имеете наркозависимость.Пройдите сеанс от зависимости у нарколога.")
-        wait(5000)
+        wait(3000)
 		sampSendChat("/me поставил печать 'Не годен' на мед.карту призывника")
 		end
       }
@@ -3213,7 +3415,7 @@ function virus(id)
         wait(7000)
 		sampSendChat("Вы не против если я вам задам несколько вопросов?")
         wait(10000)
-		sampSendChat("Были-ли у вас симпомы такие как головокружение, тошнота, сонливость?")
+		sampSendChat("Были-ли у вас симпомы в данном месяце,такие как головокружение, тошнота, сонливость?")
         wait(15000)
 		sampSendChat("Хорошо.")
 		end
@@ -3762,24 +3964,24 @@ function sampev.onServerMessage(color, text)
                 local myname = sampGetPlayerNickname(myid)
 				if cfg.main.male == true then
 				sampSendChat("/me открыл шкафчик")
-                wait(4000)
+                wait(3000)
                 sampSendChat("/me снял свою одежду, после чего сложил ее в шкаф")
-                wait(4000)
+                wait(3000)
                 sampSendChat("/me взял рабочую одежду, затем переоделся в нее")
-                wait(4000)
+                wait(3000)
                 sampSendChat("/me нацепил бейджик на рубашку")
-                wait(4000)
+                wait(3000)
                 sampSendChat('/do На рубашке бейджик с надписью "'..rank..' | '..myname:gsub('_', ' ')..'".')
 				end
 				if cfg.main.male == false then
 				sampSendChat("/me открыла шкафчик")
-                wait(4000)
+                wait(3000)
                 sampSendChat("/me сняла свою одежду, после чего сложила ее в шкаф")
-                wait(4000)
+                wait(3000)
                 sampSendChat("/me взяла рабочую одежду, затем переоделась в нее")
-                wait(4000)
+                wait(3000)
                 sampSendChat("/me нацепила бейджик на рубашку")
-                wait(4000)
+                wait(3000)
                 sampSendChat('/do На рубашке бейджик с надписью "'..rank..' | '..myname:gsub('_', ' ')..'".')
 				end
 			end
@@ -3806,7 +4008,7 @@ function sampev.onServerMessage(color, text)
 	if text:find('Вы выгнали (.+) из организации. Причина: (.+)') then
         local un1, un2 = text:match('Вы выгнали (.+) из организации. Причина: (.+)')
 		lua_thread.create(function()
-		wait(4000)
+		wait(3000)
 		if cfg.main.tarb then
         sampSendChat(string.format('/r [%s]: %s - Уволен по причине "%s".', cfg.main.tarr, un1:gsub('_', ' '), un2))
         else
@@ -3817,7 +4019,7 @@ function sampev.onServerMessage(color, text)
 	if text:find('передал(- а) удостоверение (.+)') then
         local inv1 = text:match('передал(- а) удостоверение (.+)')
 		lua_thread.create(function()
-		wait(4000)
+		wait(3000)
 		if cfg.main.tarb then
         sampSendChat(string.format('/r [%s]: '..sampGetPlayerNickname(id):gsub('_', ' ')..' - %s новый сотрудник коллектива автошколы. Приветствуем! %s%s', cfg.main.tarr, inv1:gsub('_', ' ')))
         else
@@ -3907,4 +4109,38 @@ function sampev.onServerMessage(color, text)
 			return false
         end
     end
+end
+function kvadrat()
+    local KV = {
+        [1] = "А",
+        [2] = "Б",
+        [3] = "В",
+        [4] = "Г",
+        [5] = "Д",
+        [6] = "Ж",
+        [7] = "З",
+        [8] = "И",
+        [9] = "К",
+        [10] = "Л",
+        [11] = "М",
+        [12] = "Н",
+        [13] = "О",
+        [14] = "П",
+        [15] = "Р",
+        [16] = "С",
+        [17] = "Т",
+        [18] = "У",
+        [19] = "Ф",
+        [20] = "Х",
+        [21] = "Ц",
+        [22] = "Ч",
+        [23] = "Ш",
+        [24] = "Я",
+    }
+    local X, Y, Z = getCharCoordinates(playerPed)
+    X = math.ceil((X + 3000) / 250)
+    Y = math.ceil((Y * - 1 + 3000) / 250)
+    Y = KV[Y]
+    local KVX = (Y.."-"..X)
+    return KVX
 end
