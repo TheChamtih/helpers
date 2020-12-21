@@ -1,5 +1,5 @@
 script_name('Medick Helper')
-script_version '3.6'
+script_version '3.7'
 local dlstatus = require "moonloader".download_status
 script_author('Doni_Baerra,Makar_Sheludkov')
 local sf = require 'sampfuncs'
@@ -1338,6 +1338,8 @@ function govmenu(id)
         sampSendChat("/d OG,освободил гос.волну.")
 		wait(1000)
 		sampAddChatMessage("{F80505}Не забудь {F80505}добавить {0CF513} /addvacancy!", -1) 
+		wait(1000)
+		sampAddChatMessage("{F80505}Прости {F80505}Меня {0CF513} Артем. by Baerra", -1) 
         end
    },
     {
@@ -2909,7 +2911,7 @@ function pkmmenu(id)
 	  {
 		title = "{80a4bf}»{FFFFFF} Вопросы по Уставу/Расценки {ff0000}(Ст.Состава)",
 		onclick = function()
-		if rank == 'Психолог' or rank == 'Хирург' or rank == 'Зам.Гл.Врача' or  rank == 'Гл.Врач' then
+		if rank == 'Психолог' or rank == 'Хирург' or rank == 'Зам.Глав.Врача' or  rank == 'Глав.Врач' then
 		submenus_show(ustav(id), "{9966cc}Medick Helper {ffffff}| {"..color.."}"..sampGetPlayerNickname(id).."["..id.."]")
 		else
 		ftext('Вы не находитесь в Ст.Составе')
