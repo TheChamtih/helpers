@@ -1,5 +1,5 @@
 script_name('Medick Helper')
-script_version '3.8.1'
+script_version '3.8.0'
 local dlstatus = require "moonloader".download_status
 script_author('Doni_Baerra,Makar_Sheludkov')
 local sf = require 'sampfuncs'
@@ -525,7 +525,7 @@ end
 
 function yvig(pam)
   local id, pric = string.match(pam, '(%d+)%s+(.+)')
-  if rank == 'Психолог' or rank == 'Хирург' or rank == 'Зам.Глав.Врача' or  rank == 'Главный Врач' or  rank == 'Доктор' then
+  if rank == 'Психолог' or rank == 'Хирург' or rank == 'Зам.Глав.Врача' or rank == 'Глав.Врач' or  rank == 'Доктор' then
   if id == nil then
     sampAddChatMessage("{9966cc}Medick Helper {ffffff}| Введите: /yvig [ID] [Причина]", -1)
   end
@@ -1160,12 +1160,12 @@ function fastmenu(id)
 	submenus_show(fthmenu(id), "{9966cc}Medick Helper {0033cc}| Меню лекций")
 	end
    },
-   --{
-   -- title = "{80a4bf}»{FFFFFF} Cобеседование",
-    -- onclick = function()
-	-- submenus_show(sobesedmenu(id), "{9966cc}Medick Helper {0033cc}| Меню Собеседования")
-	-- end
-   -- },
+   {
+   title = "{80a4bf}»{FFFFFF} Cобеседование",
+    onclick = function()
+	submenus_show(sobesedmenu(id), "{9966cc}Medick Helper {0033cc}| Меню Собеседования")
+	end
+   },
    -- {
    -- title = "{80a4bf}»{FFFFFF} Основное меню",
     -- onclick = function()
@@ -1191,7 +1191,7 @@ function fastmenu(id)
     {
    title = "{80a4bf}»{FFFFFF} Меню {ffffff}гос.новостей {ff0000}(Ст.Состав)",
     onclick = function()
-	if rank == 'Психолог' or rank == 'Хирург' or rank == 'Зам.Глав.Врача' or  rank == 'Глав.врач' then
+	if rank == 'Психолог' or rank == 'Хирург' or rank == 'Зам.Глав.Врача' or rank == 'Глав.Врач' then
 	submenus_show(govmenu(id), "{9966cc}Medick Helper {0033cc}| Меню гос.новостей")
 	else
 	ftext('Вы не находитесь в Ст.Составе')
@@ -1201,7 +1201,7 @@ function fastmenu(id)
    {
    title = "{80a4bf}»{FFFFFF} Меню {ffffff}отделов",
     onclick = function()
-	if rank == 'Психолог' or rank == 'Хирург' or rank == 'Зам.Глав.Врача' or  rank == 'Глав.врач' or rank == 'Доктор' or rank == 'Нарколог' then
+	if rank == 'Психолог' or rank == 'Хирург' or rank == 'Зам.Глав.Врача' or rank == 'Глав.Врач' or rank == 'Доктор' or rank == 'Нарколог' then
 	submenus_show(otmenu(id), "{9966cc}Medick Helper {0033cc}| Меню отделов")
 	else
 	ftext('Ваш ранг недостаточно высок')
@@ -1211,7 +1211,7 @@ function fastmenu(id)
    {
    title = "{80a4bf}»{FFFFFF} Вызвать сотрудника полиции в Больницу {ffffff}в /d {ff0000}(3+ ранги)",
     onclick = function()
-	if rank == 'Мед.брат' or rank =='Спасатель' or rank =='Нарколог' or rank == 'Доктор' or rank == 'Психолог' or rank == 'Хирург' or rank == 'Зам.Глав.Врача' or  rank == 'Глав.Врач' then
+	if rank == 'Мед.брат' or rank =='Спасатель' or rank =='Нарколог' or rank == 'Доктор' or rank == 'Психолог' or rank == 'Хирург' or rank == 'Зам.Глав.Врача' or rank == 'Глав.Врач' then
 	sampSendChat(string.format('/d LSPD, Вышлите сотрудника в Больницу. Благодарю!'))
 	else
 	ftext('Ваш ранг недостаточно высок')
@@ -2898,7 +2898,7 @@ function pkmmenu(id)
 	  {
 		title = "{80a4bf}»{FFFFFF} Вопросы по Уставу/Расценки {ff0000}(Ст.Состава)",
 		onclick = function()
-		if rank == 'Психолог' or rank == 'Хирург' or rank == 'Зам.Глав.Врача' or  rank == 'Глав.Врач' then
+		if rank == 'Психолог' or rank == 'Хирург' or rank == 'Зам.Глав.Врача' or rank == 'Глав.Врач' then
 		submenus_show(ustav(id), "{9966cc}Medick Helper {ffffff}| {"..color.."}"..sampGetPlayerNickname(id).."["..id.."]")
 		else
 		ftext('Вы не находитесь в Ст.Составе')
@@ -3862,7 +3862,7 @@ function getFraktionBySkin(playerid)
 end
 
 function a.onSendClickPlayer(id)
-	if rank == 'Стажер' or rank == 'Консультант' or rank == 'Мл.Инструктор' or rank == 'Инструктор' or rank == 'Доктор' or rank == 'Психолог' or rank == 'Хирург' or rank == 'Зам.Глав.Врача' or  rank == 'Главный Врач' then
+	if rank == 'Стажер' or rank == 'Консультант' or rank == 'Мл.Инструктор' or rank == 'Инструктор' or rank == 'Доктор' or rank == 'Психолог' or rank == 'Хирург' or rank == 'Зам.Глав.Врача' or rank == 'Глав.Врач' then
     setClipboardText(sampGetPlayerNickname(id))
 	ftext('Ник скопирован в буфер обмен.')
 	else
