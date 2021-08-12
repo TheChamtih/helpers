@@ -1,5 +1,5 @@
 script_name('Medick Helper')
-script_version '3.8.0'
+script_version '3.8.1'
 local dlstatus = require "moonloader".download_status
 script_author('Doni_Baerra,Makar_Sheludkov')
 local sf = require 'sampfuncs'
