@@ -212,7 +212,7 @@ function main()
   while not isSampAvailable() do wait(1000) end
   if seshsps == 1 then
 	ftext('Medick Helper успешно загружен.',-1)
-	ftext('Глав.Врач: Alexandrino Carloste.',-1)
+	ftext('Глав.Врач: Darren French.',-1)
 	ftext('Скрипт редактировал: Doni Baerra, Makar Sheludkov',-1)
 	ftext('Функции скрипта команда и кнопка: {ff0000} /mh и F3 или ПКМ+Z',-1)
 	ftext('Перезагрузить скрипт если отключится, одновременно нажать {ff0000}Ctrl+R.',-1)
@@ -290,6 +290,7 @@ function main()
   sampRegisterChatCommand('unvig',unvig)
   sampRegisterChatCommand('giverank', giverank)
   sampRegisterChatCommand('cinv', cinv)
+  sampRegisterChatCommand('ffixcar', fixcar)
   sampRegisterChatCommand('invite', invite)
   sampRegisterChatCommand('invn', invitenarko)
   sampRegisterChatCommand('blg', blg)
@@ -801,10 +802,25 @@ function invite(pam)
 	  end
    end)
  end
+ function fixcar()
+    lua_thread.create(function()
+	  if rank == 'Зам.Глав.Врача' or  rank == 'Глав.Врач' or  rank == 'Хирург' or  rank == 'Психолог' then
+        sampSendChat('/rb Спавн организационного транспорта через 15 секунд')
+		wait(5000)
+		sampSendChat('/rb  Спавн организационного транспорта через 10 секунд')
+		wait(5000)
+		sampSendChat('/rb  Спавн организационного транспорта через 5 секунд')
+		wait(5000)
+		sampSendChat('/rb  Спавн организационного транспорта')
+		wait(1000)
+		sampSendChat('/ffixcar')
+	  end
+   end)
+ end
  function invitenarko(pam)
     lua_thread.create(function()
         local id = pam:match('(%d+)')
-	  if rank == 'Зам.Глав.Врача' or  rank == 'Глав.Врач' or  rank == 'Хирург' or  rank == 'Психолог' then
+	  if rank == 'Зам.Глав.Врача' or  rank == 'Глав.Врач' or  rank == 'Хирург' or rank == 'Психолог' then
         if id then
 		if sampIsPlayerConnected(id) then
                 sampSendChat('/me достал(а) бейджик нарколога и передал(а) его '..sampGetPlayerNickname(id):gsub('_', ' ')..'')
@@ -1075,6 +1091,18 @@ end
 function oinvite(id)
  return
 {
+  {
+   title = "{80a4bf}» {FFFFFF}Отдел SES [Инспектор SES]",
+    onclick = function()
+	sampSendChat('/me достал(а) бейджик Инспектора Санитарно-Эпидемиологичесой-Станции и передал его '..sampGetPlayerNickname(id):gsub('_', ' ')..'')
+	wait(5000)
+	sampSendChat('/b /clist 10')
+	wait(5000)
+	sampSendChat('/b тег в /r [SES]')
+	wait(5000)
+	sampSendChat(string.format('/r [%s]: '..sampGetPlayerNickname(id):gsub('_', ' ')..' - повышается в долности на Инспектора Санитарно-Эпидемиологичесой-Станции.', cfg.main.tarr))
+	end
+   },
   {
    title = "{80a4bf}» {FFFFFF}Отдел SES",
     onclick = function()
@@ -1417,26 +1445,22 @@ function govmenu(id)
  return
 {
    {
-   title = "{80a4bf}»{FFFFFF} Начало собеседования:",
+   title = "{80a4bf}»{FFFFFF} Собеседование:",
     onclick = function()
 	local _, myid = sampGetPlayerIdByCharHandle(PLAYER_PED)
 	local myname = sampGetPlayerNickname(myid)
 	sampSendChat("/d OG,вещаю")
 		wait(1300)
-		sampSendChat("/me достал КПК, после чего подключился к гос. волне новостей")
-		wait(cfg.commands.zaderjka * 1300)
-        sampSendChat("/gov [MOH]: Давно хотел спасать людей, но не знаешь с чего начать?")
-        wait(cfg.commands.zaderjka * 1300)
-        sampSendChat('/gov [MOH]: Прямо сейчас проходит собеседование в Министерство Здравоохранения на должность "Интерн"')
-        wait(cfg.commands.zaderjka * 1300)
-		sampSendChat('/gov [MOH]: Вас ожидает: Дружный коллектив, карьерный рост, большая зарплата и премии каждый день.')
-		wait(cfg.commands.zaderjka * 1300)
-        sampSendChat('/gov [MOH]: Всех кандидатов будем ждать на первом этаже Больницы г.Los Santos.')
-		wait(cfg.commands.zaderjka * 1300)
-		sampSendChat("/gov [MOH]: Это твой шанс изменить жизнь к лучшему!")
-		wait(cfg.commands.zaderjka * 1300)
-		sampSendChat('/gov [MOH]: С Уважением, '..rank..' Больницы города Los-Santos - '..myname:gsub('_', ' ')..'. ')
-		wait(cfg.commands.zaderjka * 1300)
+		sampSendChat("/gov [MOH]: Давно хотели получать большую зарплату и спасать жизни людей? ")
+        wait(cfg.commands.zaderjka * 750)
+        sampSendChat('/gov [MOH]: Тогда тебе к нам! Прямо сейчас проходит собеседование в Мин.Здравоохранение.')
+        wait(cfg.commands.zaderjka * 750)
+		sampSendChat('/gov [MOH]: Вас ожидает: Дружный коллектив, карьерный рост, большая зарплата и премии каждый день. ')
+		wait(cfg.commands.zaderjka * 750)
+        sampSendChat('/gov [MOH]: Всех кандидатов будем ждать на первом этаже Больницы г.Los Santos  ')
+		wait(cfg.commands.zaderjka * 750)
+		sampSendChat('/gov [MOH]: С Уважением, '..rank..' Больницы г. Los-Santos - '..myname:gsub('_', ' ')..'.')
+		wait(2000)
         sampSendChat("/d OG,освободил гос.волну.")
 		wait(1000)
 		sampAddChatMessage("{F80505}Не забудь {F80505}добавить {0CF513} /addvacancy!", -1)
@@ -1460,7 +1484,7 @@ function govmenu(id)
 		wait(cfg.commands.zaderjka * 1300)
         sampSendChat("/gov [MOH]: Уважаемые жители и гости штата, минуточку внимания! ")
         wait(cfg.commands.zaderjka * 1300)
-        sampSendChat('/gov [MOH]: Собеседование в Министерство Здравоохранения на должность "Интерн" окончено.')
+        sampSendChat('/gov [MOH]: Собеседование в Министерство Здравоохранения окончено.')
         wait(cfg.commands.zaderjka * 1300)
 		sampSendChat('/gov [MOH]: Сообщаю, что на оф.портале министерства здравоохранения открыты заявление на должность "Нарколог" ')
 		wait(cfg.commands.zaderjka * 1300)
@@ -1530,68 +1554,68 @@ function govmenu(id)
 		end
 	end
    },
-   {
-   title = "{80a4bf}»{FFFFFF} COVID 19:",
-    onclick = function()
-	local _, myid = sampGetPlayerIdByCharHandle(PLAYER_PED)
-	local myname = sampGetPlayerNickname(myid)
-	sampSendChat("/d OG,вещаю")
-        wait(cfg.commands.zaderjka * 1300)
-		sampSendChat("/me достал КПК, после чего подключился к гос. волне новостей")
-		wait(cfg.commands.zaderjka * 1300)
-        sampSendChat("/gov [МОН] Уважаемые жители штата, минуточку внимание!")
-        wait(cfg.commands.zaderjka * 1300)
-		sampSendChat('/gov [МОН] В данный момент, поступила информация про вирус!')
-		wait(cfg.commands.zaderjka * 1300)
-        sampSendChat('/gov [МОН] Будьте осторожны, носите маски и держите дистанцию,так же не забывайте мыть руки с мылом.')
-		wait(cfg.commands.zaderjka * 1300)
-        sampSendChat('/gov [МОН] Про вирус вы сможете узнать, на офф.портале штата!')
-		wait(cfg.commands.zaderjka * 1300)
-		sampSendChat('/gov [MOH]:С Уважением, '..rank..' Больницы города Los-Santos - '..myname:gsub('_', ' ')..'. ')
-		wait(cfg.commands.zaderjka * 1300)
-		sampSendChat('/gov [МОН] Будьте здоровы, Не болейте!')
-		wait(cfg.commands.zaderjka * 1300)
-        sampSendChat("/d OG,освободил гос.волну.")
-		wait(1200)
-		if cfg.main.hud then
-        sampSendChat("/time")
-        wait(500)
-        setVirtualKeyDown(key.VK_F8, true)
-        wait(150)
-        setVirtualKeyDown(key.VK_F8, false)
-		end
-	end
-   },
-    {
-   title = "{80a4bf}»{FFFFFF} Система {fb05d6}рефералов:",
-    onclick = function()
-	local _, myid = sampGetPlayerIdByCharHandle(PLAYER_PED)
-	local myname = sampGetPlayerNickname(myid)
-	sampSendChat("/d OG,вещаю")
-        wait(cfg.commands.zaderjka * 1300)
-		sampSendChat("/me достал КПК, после чего подключился к гос. волне новостей")
-		wait(cfg.commands.zaderjka * 1300)
-        sampSendChat("/gov [МОН] Уважаемые жители штата, минуточку внимание!")
-        wait(cfg.commands.zaderjka * 1300)
-		sampSendChat('/gov [MOH] В центральной больнице города Los-Santos`a действует реферальная система.')
-		wait(cfg.commands.zaderjka * 1300)
-        sampSendChat('/gov [MOH]: С данной системой вы можете ознакомиться на оф.портале больницы.')
-		wait(cfg.commands.zaderjka * 1300)
-		sampSendChat('/gov [MOH]:С Уважением, '..rank..' Больницы города Los-Santos - '..myname:gsub('_', ' ')..'. ')
-		wait(cfg.commands.zaderjka * 1300)
-		sampSendChat('/gov [МОН] Будьте здоровы, Не болейте!')
-		wait(cfg.commands.zaderjka * 1300)
-        sampSendChat("/d OG,освободил гос.волну.")
-		wait(1200)
-		if cfg.main.hud then
-        sampSendChat("/time")
-        wait(500)
-        setVirtualKeyDown(key.VK_F8, true)
-        wait(150)
-        setVirtualKeyDown(key.VK_F8, false)
-		end
-	end
-   },
+   -- {
+   -- title = "{80a4bf}»{FFFFFF} COVID 19:",
+    -- onclick = function()
+	-- local _, myid = sampGetPlayerIdByCharHandle(PLAYER_PED)
+	-- local myname = sampGetPlayerNickname(myid)
+	-- sampSendChat("/d OG,вещаю")
+        -- wait(cfg.commands.zaderjka * 1300)
+		-- sampSendChat("/me достал КПК, после чего подключился к гос. волне новостей")
+		-- wait(cfg.commands.zaderjka * 1300)
+        -- sampSendChat("/gov [МОН] Уважаемые жители штата, минуточку внимание!")
+        -- wait(cfg.commands.zaderjka * 1300)
+		-- sampSendChat('/gov [МОН] В данный момент, поступила информация про вирус!')
+		-- wait(cfg.commands.zaderjka * 1300)
+        -- sampSendChat('/gov [МОН] Будьте осторожны, носите маски и держите дистанцию,так же не забывайте мыть руки с мылом.')
+		-- wait(cfg.commands.zaderjka * 1300)
+        -- sampSendChat('/gov [МОН] Про вирус вы сможете узнать, на офф.портале штата!')
+		-- wait(cfg.commands.zaderjka * 1300)
+		-- sampSendChat('/gov [MOH]:С Уважением, '..rank..' Больницы города Los-Santos - '..myname:gsub('_', ' ')..'. ')
+		-- wait(cfg.commands.zaderjka * 1300)
+		-- sampSendChat('/gov [МОН] Будьте здоровы, Не болейте!')
+		-- wait(cfg.commands.zaderjka * 1300)
+        -- sampSendChat("/d OG,освободил гос.волну.")
+		-- wait(1200)
+		-- if cfg.main.hud then
+        -- sampSendChat("/time")
+        -- wait(500)
+        -- setVirtualKeyDown(key.VK_F8, true)
+        -- wait(150)
+        -- setVirtualKeyDown(key.VK_F8, false)
+		-- end
+	-- end
+   -- },
+    -- {
+   -- title = "{80a4bf}»{FFFFFF} Система {fb05d6}рефералов:",
+    -- onclick = function()
+	-- local _, myid = sampGetPlayerIdByCharHandle(PLAYER_PED)
+	-- local myname = sampGetPlayerNickname(myid)
+	-- sampSendChat("/d OG,вещаю")
+        -- wait(cfg.commands.zaderjka * 1300)
+		-- sampSendChat("/me достал КПК, после чего подключился к гос. волне новостей")
+		-- wait(cfg.commands.zaderjka * 1300)
+        -- sampSendChat("/gov [МОН] Уважаемые жители штата, минуточку внимание!")
+        -- wait(cfg.commands.zaderjka * 1300)
+		-- sampSendChat('/gov [MOH] В центральной больнице города Los-Santos`a действует реферальная система.')
+		-- wait(cfg.commands.zaderjka * 1300)
+        -- sampSendChat('/gov [MOH]: С данной системой вы можете ознакомиться на оф.портале больницы.')
+		-- wait(cfg.commands.zaderjka * 1300)
+		-- sampSendChat('/gov [MOH]:С Уважением, '..rank..' Больницы города Los-Santos - '..myname:gsub('_', ' ')..'. ')
+		-- wait(cfg.commands.zaderjka * 1300)
+		-- sampSendChat('/gov [МОН] Будьте здоровы, Не болейте!')
+		-- wait(cfg.commands.zaderjka * 1300)
+        -- sampSendChat("/d OG,освободил гос.волну.")
+		-- wait(1200)
+		-- if cfg.main.hud then
+        -- sampSendChat("/time")
+        -- wait(500)
+        -- setVirtualKeyDown(key.VK_F8, true)
+        -- wait(150)
+        -- setVirtualKeyDown(key.VK_F8, false)
+		-- end
+	-- end
+   -- },
 }
 end
 
@@ -3870,7 +3894,7 @@ function a.onSendClickPlayer(id)
 end
 
 function smsjob()
-  if rank == 'Хирург' or rank == 'Зам.Глав.Врача' or  rank == 'Главный Врач' then
+  if rank == 'Психолог' or rank == 'Хирург' or rank == 'Зам.Глав.Врача' or  rank == 'Главный Врач' then
     lua_thread.create(function()
         vixodid = {}
 		status = true
@@ -3888,7 +3912,7 @@ function smsjob()
         vixodid = {}
 	end)
 	else
-	ftext('Данная команда доступна с 8 ранга')
+	ftext('Данная команда доступна с 7 ранга')
 	end
 end
 
@@ -4127,7 +4151,7 @@ function sampev.onServerMessage(color, text)
 			local id, data, nick, rang, stat = text:match('ID: (%d+) | (.+) | (.+): (.+) %- (.+)')
 			local color = ("%06X"):format(bit.band(sampGetPlayerColor(id), 0xFFFFFF))
 			local nmrang = rang:match('.+%[(%d+)%]')
-            if stat:find('Выходной') and tonumber(nmrang) < 8 then
+            if stat:find('Выходной') and tonumber(nmrang) < 7 then
                 table.insert(vixodid, id)
             end
 			table.insert(players2, string.format('{ffffff}%s\t {'..color..'}%s[%s]{ffffff}\t%s\t%s', data, nick, id, rang, stat))
